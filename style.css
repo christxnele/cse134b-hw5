@@ -1279,6 +1279,15 @@ tool-tag {
     color: var(--color-accent);
 }
 
+/* EXPERIMENT PAGE: fact panel card, matches .proj-card */
+fact-panel {
+    display: block;
+    max-width: 40rem;
+    border: 1px solid var(--color-text);
+    border-radius: 6px;
+    padding: 1.25rem;
+}
+
 /* PROJECT DETAIL PAGES */
 .project-detail .back-link {
     display: inline-block;
