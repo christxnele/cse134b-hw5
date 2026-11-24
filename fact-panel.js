@@ -1,17 +1,9 @@
-const sampleFacts = [
-    { text: 'Honey can last for thousands of years.', source: 'Sample source A' },
-    { text: 'Octopuses have three hearts.', source: 'Sample source B' },
-    { text: 'Identical twins do not have the same fingerprints.', source: 'Sample source C' },
-    { text: 'Earlobes have no biological purpose.', source: 'Sample source D' },
-    { text: 'There is no such thing as zero-calorie foods.', source: 'Sample source E' },
-];
+const FACT_URL = 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en';
 
 class FactPanel extends HTMLElement {
-    static observedAttributes = ['compact']
+    static observedAttributes = ['compact'];
 
     buildInterface() {
-
-        this.index = 0;
 
         const heading = document.createElement('h2');
         heading.textContent = 'Random Fact';
@@ -32,23 +24,15 @@ class FactPanel extends HTMLElement {
         this.statusText.setAttribute('role', 'status');
         this.appendChild(this.statusText);
 
-        this.button.addEventListener('click', () => this.nextFact())   
+        this.button.addEventListener('click', () => this.loadFact());  
         
-        this.showFact();
+        this.loading = false;
+        this.loadFact();
     }
     showFact() {
-        const fact = sampleFacts[this.index];
-        this.factText.textContent = fact.text;
-        this.sourceText.textContent = `Source: ${fact.source}`;
-        this.statusText.textContent  = `Fact ${this.index + 1} of ${sampleFacts.length}`;
-    }
-    nextFact() {
-        this.index = this.index + 1
-
-        if (this.index === sampleFacts.length) {
-            this.index = 0;
-        }
-        this.showFact();
+        this.factText.textContent = this.fact.text;
+        this.sourceText.textContent = `Source: ${this.fact.source}`;
+        this.statusText.textContent  = 'New fact loaded';
     }
     attributeChangedCallback() {
         if (this.getAttribute('compact') !== null) {
@@ -56,6 +40,36 @@ class FactPanel extends HTMLElement {
         } else {
             this.sourceText.hidden = false;
         }
+    }
+    async loadFact() {
+        if (this.loading) {
+            return;
+        }
+        this.loading = true;
+        this.statusText.textContent = 'Loading a fact...';
+
+        try {
+            const response = await fetch(FACT_URL);
+
+            if (!response.ok) {
+                throw new Error(`HTTP status ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (typeof data?.text !== "string" || typeof data?.source !== "string" ) {
+                 throw new Error("Expected text and source in the response.");
+            }
+
+            this.fact = data;
+            this.showFact();
+            this.button.textContent = 'New Fact';
+        } catch (error) {
+            console.error('Could not load the fact.', error);
+            this.statusText.textContent = 'The request failed. Please try again';
+            this.button.textContent = 'Try again';
+        }
+        this.loading = false;
     }
 }
 
