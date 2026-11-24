@@ -1279,13 +1279,34 @@ tool-tag {
     color: var(--color-accent);
 }
 
-/* EXPERIMENT PAGE: fact panel card, matches .proj-card */
+/* EXPERIMENT PAGE: pass the site's colors to the component */
+
 fact-panel {
-    display: block;
-    max-width: 40rem;
+    --panel-background: var(--color-band, white);
+    --panel-text: var(--color-text, black);
+    --panel-border: var(--color-accent, gray);
+    --panel-button-font: var(--font-display, inherit);
+    --panel-button-text: var(--color-nav-text, white);
+    --panel-button-background: #56623f;
+}
+
+/* outside button, matches the filter btns */
+#toggle-details {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
     border: 1px solid var(--color-text);
-    border-radius: 6px;
-    padding: 1.25rem;
+    border-radius: var(--radius);
+    padding: 0.15em 0.9em;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#toggle-details:hover {
+    transform: scale(1.02);
+    background-color: var(--color-band);
 }
 
 /* PROJECT DETAIL PAGES */

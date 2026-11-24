@@ -1,4 +1,5 @@
 const FACT_URL = 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en';
+const MODE_KEY = 'hw5-fact-panel-mode';
 
 class FactPanel extends HTMLElement {
     static observedAttributes = ['compact'];
@@ -75,19 +76,57 @@ class FactPanel extends HTMLElement {
 
 customElements.define('fact-panel', FactPanel);
 
+function getSavedMode() {
+    try {
+        if (localStorage.getItem(MODE_KEY)== 'compact') {
+            return 'compact'
+        } else {
+            return 'expanded'
+        }
+    } catch (error) {
+        return 'expanded';
+    }
+}
+function saveMode(mode) {
+    try {
+        localStorage.setItem(MODE_KEY, mode)
+    } catch (error) {
+        console.error('Could not save the mode.', error);
+    }
+}
 function loadHandler() {
     const panel = document.querySelector('fact-panel');
     panel.buildInterface();
 
     const toggleButton = document.querySelector('#toggle-details');
 
-    function toggleHandler() {
-        panel.toggleAttribute('compact');
+    function updateLabel() {
+        if (panel.getAttribute('compact') !== null) {
+            toggleButton.textContent = 'Show Details';
+        } else {
+            toggleButton.textContent = 'Hide Details';
+        }
     }
 
+    function toggleHandler() {
+        panel.toggleAttribute('compact');
+        updateLabel();
+
+        if (panel.getAttribute('compact') !== null) {
+            saveMode('compact');
+        } else {
+            saveMode('expanded');
+        }
+    }
+
+    if (getSavedMode() === 'compact') {
+        panel.setAttribute('compact', '');
+
+    }
+    updateLabel();
+    toggleButton.hidden = false;
+
     toggleButton.addEventListener('click', toggleHandler);
-
 }
-
 
 window.addEventListener('DOMContentLoaded', loadHandler);

@@ -9,6 +9,7 @@
     />
     <link rel="icon" href="favicon.svg" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="fact-panel.css" />
     <!-- no defer: applies the saved theme before the page paints -->
     <script src="theme.js"></script>
     <script src="fact-panel.js"></script>
@@ -80,8 +81,11 @@
         <h1>Experiment</h1>
       </hgroup>
       <p class="page-intro">A small web component that shows random facts.</p>
-      <button type="button" id="toggle-details">Toggle Details</button>
+      <button type="button" id="toggle-details" hidden>Toggle Details</button>
       <fact-panel></fact-panel>
+      <noscript>
+        <p>Enable JavaScript to load live data for this widget.</p>
+    </noscript>
     </main>
     <footer>
       <ul>

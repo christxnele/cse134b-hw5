@@ -1,0 +1,30 @@
+fact-panel {
+    display: block;
+    max-width: 40rem;
+    padding: 1.25rem;
+    border: 1px solid var(--panel-border, gray);
+    border-radius: 6px;
+    background-color: var(--panel-background, white);
+    color: var(--panel-text, black);
+}
+
+/* New Fact button: green fill, grows a little on hover */
+fact-panel button {
+    font-family: var(--panel-button-font, inherit);
+    font-size: 1.2rem;
+    color: var(--panel-button-text, white);
+    background-color: var(--panel-button-background, #56623f);
+    border: none;
+    border-radius: 14px;
+    padding: 0.3em 1.1em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+fact-panel button:hover {
+    transform: scale(1.02);
+}
+
+fact-panel:empty {
+    display: none;
+}
